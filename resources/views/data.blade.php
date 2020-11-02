@@ -8,7 +8,12 @@
 				</span>
                 <form class="login100-form validate-form p-b-33 p-t-5" method="post">
                     @csrf
-                    <div class="wrap-input100 " data-validate="url slug"    >
+                    @if(session()->has('error'))
+                        <div class="alert alert-warning">
+                            <p>{{ session()->get('error') }}</p>
+                        </div>
+                    @endif
+                    <div class="wrap-input100 " data-validate="url slug">
                         <input class="input100" type="text" id="code" name="code" placeholder="ادرس کوتاه شده">
                         <span class="focus-input100" data-placeholder="&#xe82a;"></span>
                     </div>

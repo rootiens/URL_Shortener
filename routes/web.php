@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [UrlController::class,'index']);
+Route::get('/', [UrlController::class,'index'])->name('home');
 Route::post('/',[UrlController::class, 'store']);
 Route::get('/natije', [UrlController::class,'natije'])->name('natije');
 Route::get('/{code}', [UrlController::class,'redirect'])->name('redirect');

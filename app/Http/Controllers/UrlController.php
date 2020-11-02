@@ -18,19 +18,24 @@ class UrlController extends Controller
     public function store(Request $request)
     {
 
-        if($request->input('code') == null){
+        if ($request->input('code') == null) {
             $code = Str::random(5);
         } else {
             $code = $request->input('code');
+
         }
-        $url = URL::Create([
+        if (Url::where('code', '=', $request->input('code'))->exists()) {
+            return redirect()->route('home')->with('error', 'این لینک قبلا ثبت شده است');
+        }
+
+        URL::Create([
             'full_url' => $request->input('fullurl'),
             'code' => $code
         ]);
 
         $backs = [
             "code" => "کد کوتاه شده = " . $code,
-            "url" =>"آدرس کامل = " . $request->input('fullurl')
+            "url" => "آدرس کامل = " . $request->input('fullurl')
         ];
         return view('natije', compact('backs'));
     }
@@ -42,11 +47,11 @@ class UrlController extends Controller
 
     public function redirect($code)
     {
-        $url = Url::where('code',$code)->first();
-        if(!$url){
+        $url = Url::where('code', $code)->first();
+        if (!$url) {
             echo 'NOT FOUND';
         }
-        DB::table('urls')->where('code',$code)->increment('visit_count');
+        DB::table('urls')->where('code', $code)->increment('visit_count');
         return redirect($url->full_url);
     }
 }
